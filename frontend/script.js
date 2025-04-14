@@ -1,5 +1,6 @@
-const host = window.location.hostname || 'localhost';
-const baseUrl = `http://${host}:3000`;
+const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const baseUrl = isLocal ? 'http://localhost:3000' : window.location.origin;
+
 
 const loginForm = document.getElementById('loginForm');
 const registerForm = document.getElementById('registerForm');
