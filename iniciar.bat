@@ -1,14 +1,11 @@
 @echo off
-title PlataformaLT pública (URL aleatoria)
-echo Iniciando PlataformaLT con LocalTunnel...
+echo Iniciando PlataformaLT...
 
-REM Iniciar el backend en nueva ventana
+REM Iniciar backend
 start cmd /k "cd backend && node server.js"
 
-REM Esperar unos segundos para asegurarse de que el servidor está activo
-timeout /t 2 >nul
+timeout /t 3 > nul
 
-REM Iniciar LocalTunnel sin subdominio (URL aleatoria)
-start cmd /k "lt --port 3000"
-
+REM Abrir la plataforma en el navegador predeterminado
+start "" "http://localhost:3000"
 exit
