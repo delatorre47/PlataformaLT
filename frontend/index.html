@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlataformaLT</title>
+  <style>
+    :root {
+      --green: #4CAF50;
+      --red: #f44336;
+      --gray-light: #f0f2f5;
+      --gray-dark: #333;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--gray-light);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 10px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: var(--gray-dark);
+      font-size: 1.8rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    input, button {
+      padding: 12px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: var(--green);
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button.logout {
+      background-color: var(--red);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      background: #f9f9f9;
+      margin-bottom: 10px;
+      padding: 12px;
+      border-radius: 6px;
+    }
+
+    li.completed {
+      background-color: #d3ffd3;
+      text-decoration: line-through;
+      color: gray;
+    }
+
+    li input[type="checkbox"] {
+      margin-right: 15px;
+      transform: scale(1.3);
+    }
+
+    li button {
+      margin-left: auto;
+      background-color: var(--red);
+      border: none;
+      padding: 6px 10px;
+      color: white;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📋 PlataformaLT</h1>
+
+    <!-- LOGIN/REGISTRO -->
+    <div id="authSection">
+      <form id="loginForm">
+        <input type="text" id="loginUser" placeholder="Usuario" required />
+        <input type="password" id="loginPass" placeholder="Contraseña" required />
+        <button type="submit">🔐 Iniciar sesión</button>
+      </form>
+
+      <form id="registerForm">
+        <input type="text" id="regUser" placeholder="Nuevo usuario" required />
+        <input type="password" id="regPass" placeholder="Nueva contraseña" required />
+        <button type="submit">📝 Registrarse</button>
+      </form>
+    </div>
+
+    <!-- LISTA DE TAREAS -->
+    <div id="taskSection" style="display: none;">
+      <p><strong>Usuario:</strong> <span id="activeUser"></span></p>
+      <form id="taskForm">
+        <input type="text" id="taskInput" placeholder="Escribe una nueva tarea..." required />
+        <button type="submit">➕ Añadir tarea</button>
+      </form>
+      <ul id="taskList"></ul>
+      <button class="logout" onclick="logout()">Cerrar sesión</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+[
+  {
+    "username": "Daniel",
+    "password": "1234",
+    "tasks": [
+      {
+        "id": "1744595865153",
+        "description": "Limón",
+        "completed": false
+      },
+      {
+        "id": "1744595869393",
+        "description": "Uvas",
+        "completed": false
+      },
+      {
+        "id": "1744595873023",
+        "description": "Peras",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "username": "Juan",
+    "password": "abcd",
+    "tasks": [
+      {
+        "id": "1744595936305",
+        "description": "Leon",
+        "completed": false
+      },
+      {
+        "id": "1744595940502",
+        "description": "Tigre",
+        "completed": false
+      },
+      {
+        "id": "1744595944683",
+        "description": "Panda",
+        "completed": false
+      }
+    ]
+  }
+]

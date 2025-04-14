@@ -1,0 +1,15 @@
+{
+  "name": "plataformalt",
+  "version": "1.0.0",
+  "description": "Plataforma de lista de tareas simple con backend en Node.js y frontend HTML responsivo",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "author": "Tu Nombre",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
+}
