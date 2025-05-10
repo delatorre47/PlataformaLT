@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Restablecer Contraseña</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #1e90ff;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input, button {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #4da6ff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #1e90ff;
+    }
+
+    #msg {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🔒 Restablecer Contraseña</h2>
+    <form id="resetForm">
+      <input type="password" id="newPass" placeholder="Nueva contraseña" required />
+      <input type="password" id="confirmPass" placeholder="Confirma la nueva contraseña" required />
+      <button type="submit">Actualizar</button>
+    </form>
+    <div id="msg"></div>
+  </div>
+
+  <script>
+    const baseUrl = location.origin.includes('localhost') ? 'http://localhost:3000' : location.origin;
+    const resetForm = document.getElementById('resetForm');
+    const msg = document.getElementById('msg');
+
+    const token = new URLSearchParams(window.location.search).get('token');
+
+    if (!token) {
+      msg.textContent = 'Token inválido o ausente';
+      msg.style.color = '#f44336';
+      resetForm.style.display = 'none';
+    }
+
+    resetForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const newPassword = document.getElementById('newPass').value;
+      const confirmPassword = document.getElementById('confirmPass').value;
+
+      if (newPassword !== confirmPassword) {
+        msg.textContent = 'Las contraseñas no coinciden';
+        msg.style.color = '#f44336';
+        return;
+      }
+
+      const isValid = newPassword.length >= 8 && /[a-zA-Z]/.test(newPassword) && /\d/.test(newPassword);
+      if (!isValid) {
+        msg.textContent = 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números';
+        msg.style.color = '#f44336';
+        return;
+      }
+
+      try {
+        const res = await fetch(`${baseUrl}/reset-password`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token, newPassword })
+        });
+
+        const text = await res.text();
+        msg.textContent = text;
+        msg.style.color = res.ok ? '#4caf50' : '#f44336';
+
+        if (res.ok) {
+          document.getElementById('newPass').value = '';
+          document.getElementById('confirmPass').value = '';
+
+          let countdown = 4;
+          const interval = setInterval(() => {
+            msg.textContent = `${text} Redirigiendo en ${countdown--} segundos...`;
+            if (countdown < 0) {
+              clearInterval(interval);
+              window.location.href = '/';
+            }
+          }, 1000);
+        }
+      } catch (err) {
+        msg.textContent = 'Hubo un error al actualizar la contraseña';
+        msg.style.color = '#f44336';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -3,17 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PlataformaLT</title>
+  <title>Lista De Tareas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --green: #4CAF50;
-      --red: #f44336;
-      --gray-light: #f0f2f5;
-      --gray-dark: #333;
+      --blue: #4da6ff;
+      --blue-dark: #1e90ff;
+      --gray-light: #f4f7fa;
+      --gray: #ccc;
+      --white: #ffffff;
+      --text: #333;
+      --success: #4caf50;
+      --error: #f44336;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Poppins', sans-serif;
       background-color: var(--gray-light);
       margin: 0;
       padding: 0;
@@ -22,20 +31,20 @@
     }
 
     .container {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
+      background: var(--white);
+      border-radius: 16px;
+      padding: 24px;
       margin: 20px 10px;
       width: 100%;
-      max-width: 480px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 20px;
-      color: var(--gray-dark);
-      font-size: 1.8rem;
+      margin-bottom: 24px;
+      color: var(--blue-dark);
+      font-weight: 600;
     }
 
     form {
@@ -45,22 +54,50 @@
       margin-bottom: 20px;
     }
 
-    input, button {
+    input, button, select {
       padding: 12px;
       font-size: 1rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+      border-radius: 8px;
+      border: 1px solid var(--gray);
     }
 
     button {
-      background-color: var(--green);
+      background-color: var(--blue);
       color: white;
       border: none;
       cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: var(--blue-dark);
     }
 
     button.logout {
-      background-color: var(--red);
+      background-color: var(--error);
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .progress {
+      background: var(--gray);
+      border-radius: 8px;
+      overflow: hidden;
+      height: 10px;
+      margin-bottom: 16px;
+    }
+
+    .progress-bar {
+      background: var(--blue-dark);
+      height: 100%;
+      width: 0;
+      transition: width 0.3s;
     }
 
     ul {
@@ -69,17 +106,18 @@
       margin: 0;
     }
 
+
     li {
       display: flex;
       align-items: center;
-      background: #f9f9f9;
+      background: #eaf6ff;
       margin-bottom: 10px;
       padding: 12px;
-      border-radius: 6px;
+      border-radius: 8px;
     }
 
     li.completed {
-      background-color: #d3ffd3;
+      background-color: #d8f8d8;
       text-decoration: line-through;
       color: gray;
     }
@@ -91,43 +129,84 @@
 
     li button {
       margin-left: auto;
-      background-color: var(--red);
+      background-color: var(--error);
       border: none;
       padding: 6px 10px;
       color: white;
       cursor: pointer;
       border-radius: 6px;
     }
+
+    #filters {
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .fade-in {
+    animation: fadeIn 0.4s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>📋 PlataformaLT</h1>
+    <h1>📋Lista De Tareas</h1>
 
-    <!-- LOGIN/REGISTRO -->
     <div id="authSection">
       <form id="loginForm">
-        <input type="text" id="loginUser" placeholder="Usuario" required />
+        <input type="email" id="loginEmail" placeholder="Correo electrónico" required />
         <input type="password" id="loginPass" placeholder="Contraseña" required />
         <button type="submit">🔐 Iniciar sesión</button>
+        <div id="forgotLink" style="text-align: center; margin-top: -5px; margin-bottom: 10px; display: none;">
+          <a href="recuperar.html" style="font-size: 0.85rem; color: #4da6ff; text-decoration: none;">
+            ¿Has olvidado tu contraseña?
+          </a>
+        </div>
       </form>
-
+     
       <form id="registerForm">
-        <input type="text" id="regUser" placeholder="Nuevo usuario" required />
+        <input type="email" id="regEmail" placeholder="Correo electrónico" required />
         <input type="password" id="regPass" placeholder="Nueva contraseña" required />
+        <small id="passwordHint" style="color: #888; font-size: 0.85rem;">
+          La contraseña debe tener al menos 8 caracteres, incluyendo letras y números.
+        </small>
         <button type="submit">📝 Registrarse</button>
-      </form>
+      </form>      
     </div>
 
-    <!-- LISTA DE TAREAS -->
     <div id="taskSection" style="display: none;">
-      <p><strong>Usuario:</strong> <span id="activeUser"></span></p>
+      <p>
+        <strong>Usuario:</strong> <span id="activeUser"></span>
+        <a href="config.html" style="margin-left: 10px; text-decoration: none;" title="Configuración">
+          ⚙️
+        </a>
+      </p>      
+      <p id="completedInfo" style="text-align: center; margin: 8px 0; color: #1e90ff; font-weight: 500;"></p>
+
+
+      <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <div id="filters" style="display: flex; justify-content: center; margin-bottom: 10px;">
+        <button id="filterButton">🔁 Filtro: Todas</button>
+      </div>      
+
       <form id="taskForm">
         <input type="text" id="taskInput" placeholder="Escribe una nueva tarea..." required />
         <button type="submit">➕ Añadir tarea</button>
       </form>
       <ul id="taskList"></ul>
-      <button class="logout" onclick="logout()">Cerrar sesión</button>
+      <div style="text-align: center; margin-top: 20px;">
+        <button class="logout" onclick="logout()">Cerrar sesión 🔓</button>
+      </div>
+      
     </div>
   </div>
 

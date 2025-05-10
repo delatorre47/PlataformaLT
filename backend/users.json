@@ -1,44 +1,51 @@
 [
   {
-    "username": "Daniel",
-    "password": "1234",
+    "email": "danieldelatorregordon@gmail.com",
+    "password": "Venti2005lador",
     "tasks": [
       {
-        "id": "1744595869393",
-        "description": "Uvas",
-        "completed": true
-      },
-      {
-        "id": "1744595873023",
-        "description": "Peras",
+        "id": "1746208674835",
+        "description": "Estudiar teoria cerámicos",
         "completed": false
       },
       {
-        "id": "1744605526690",
-        "description": "Limón",
-        "completed": true
+        "id": "1746208685700",
+        "description": "Estudiar teoria polimeros",
+        "completed": false
+      },
+      {
+        "id": "1746208701837",
+        "description": "Estudiar teoria materiales compuestos",
+        "completed": false
+      },
+      {
+        "id": "1746208709293",
+        "description": "Hacer apuntes fluidos",
+        "completed": false
+      },
+      {
+        "id": "1746208727215",
+        "description": "Hacer problema 2 examen ejemplo fluidos",
+        "completed": false
       }
-    ]
+    ],
+    "verified": true
   },
   {
-    "username": "Juan",
-    "password": "abcd",
+    "email": "nicolasdelatorregordon@gmail.com",
+    "password": "Soyunbebe7",
     "tasks": [
       {
-        "id": "1744595936305",
-        "description": "Leon",
+        "id": "1746209648964",
+        "description": "Comprar potito",
         "completed": false
       },
       {
-        "id": "1744595940502",
-        "description": "Tigre",
-        "completed": false
-      },
-      {
-        "id": "1744595944683",
-        "description": "Panda",
+        "id": "1746209664574",
+        "description": "Comprar pañales",
         "completed": false
       }
-    ]
+    ],
+    "verified": true
   }
 ]
