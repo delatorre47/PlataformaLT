@@ -4,6 +4,9 @@ const cors = require('cors');
 const path = require('path');
 const app = express();
 const USERS_FILE = './users.json';
+const isProduction = process.env.NODE_ENV === 'production';
+const publicURL = isProduction ? 'https://plataformalt.onrender.com' : `http://${localIp}:3000`;
+
 
 const os = require('os');
 function getLocalIp() {
@@ -176,6 +179,7 @@ const transporter = nodemailer.createTransport({
 function sendVerificationEmail(email, token) {
   const linkPC = `http://localhost:3000/verify?token=${token}`;
   const linkMobile = `http://${localIp}:3000/verify?token=${token}`;
+  const linkPublic = `${publicURL}/verify?token=${token}`; // 🔧
 
   const mailOptions = {
     from: 'danieldelatorregordon@gmail.com',
@@ -186,12 +190,14 @@ function sendVerificationEmail(email, token) {
       <ul>
         <li>Desde el <strong>ordenador</strong>: <a href="${linkPC}">${linkPC}</a></li>
         <li>Desde el <strong>móvil</strong>: <a href="${linkMobile}">${linkMobile}</a></li>
+        <li><strong>Acceso público (Render):</strong> <a href="${linkPublic}">${linkPublic}</a></li>
       </ul>
     `
   };
 
   return transporter.sendMail(mailOptions);
 }
+
 
 //VERIFICACIÓN
 app.get('/verify', (req, res) => {
@@ -265,6 +271,7 @@ app.put('/change-password', (req, res) => {
 function sendPasswordRecoveryEmail(email, token) {
   const linkPC = `http://localhost:3000/recuperar-reset.html?token=${token}`;
   const linkMobile = `http://${localIp}:3000/recuperar-reset.html?token=${token}`;
+  const linkPublic = `${publicURL}/recuperar-reset.html?token=${token}`;
 
   const mailOptions = {
     from: 'danieldelatorregordon@gmail.com',
@@ -275,12 +282,14 @@ function sendPasswordRecoveryEmail(email, token) {
       <ul>
         <li><strong>Desde el ordenador:</strong> <a href="${linkPC}">${linkPC}</a></li>
         <li><strong>Desde el móvil:</strong> <a href="${linkMobile}">${linkMobile}</a></li>
+        <li><strong>Acceso público (Render):</strong> <a href="${linkPublic}">${linkPublic}</a></li>
       </ul>
     `
   };
 
   return transporter.sendMail(mailOptions);
 }
+
 
 app.post('/recover-password', (req, res) => {
   const { email } = req.body;
@@ -328,6 +337,7 @@ app.post('/reset-password', (req, res) => {
 function sendEmailChangeVerification(to, token) {
   const linkPC = `http://localhost:3000/verify-email-change.html?token=${token}`;
   const linkMobile = `http://${localIp}:3000/verify-email-change.html?token=${token}`;
+  const linkPublic = `${publicURL}/verify-email-change.html?token=${token}`;
 
   const mailOptions = {
     from: 'danieldelatorregordon@gmail.com',
@@ -338,12 +348,14 @@ function sendEmailChangeVerification(to, token) {
       <ul>
         <li><strong>Desde el ordenador:</strong> <a href="${linkPC}">${linkPC}</a></li>
         <li><strong>Desde el móvil:</strong> <a href="${linkMobile}">${linkMobile}</a></li>
+        <li><strong>Acceso público (Render):</strong> <a href="${linkPublic}">${linkPublic}</a></li>
       </ul>
     `
   };
 
   return transporter.sendMail(mailOptions);
 }
+
 
 app.post('/request-email-change', (req, res) => {
   const { oldEmail, newEmail, password } = req.body;
