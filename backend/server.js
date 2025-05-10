@@ -390,16 +390,11 @@ app.get('/verify-email-change', (req, res) => {
   const users = readUsers();
 
   const user = users.find(u => u.emailChangeToken === token);
-  if (!user) {
-    return res.status(400).send('Token inválido o expirado');
-  }
+  if (!user) return res.status(400).send('Token inválido o expirado');
 
   const newEmail = user.pendingEmail;
-  if (!newEmail) {
-    return res.status(400).send('No se encontró el nuevo correo pendiente');
-  }
+  if (!newEmail) return res.status(400).send('No se encontró el nuevo correo pendiente');
 
-  // Asegurarse de que el nuevo email no esté ya en uso
   if (users.find(u => u.email === newEmail)) {
     return res.status(409).send('El nuevo correo ya está registrado por otro usuario');
   }
@@ -409,5 +404,6 @@ app.get('/verify-email-change', (req, res) => {
   delete user.emailChangeToken;
   writeUsers(users);
 
-  res.send(`OK:${user.email}`);
+  // ✅ Devuelve el usuario actualizado
+  res.json({ success: true, user });
 });

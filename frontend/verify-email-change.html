@@ -70,9 +70,32 @@
   </div>
 
   <script>
-    setTimeout(() => {
-      window.location.href = "/";
-    }, 4000);
-  </script>
+  const token = new URLSearchParams(window.location.search).get('token');
+  const statusEl = document.getElementById('status');
+  const messageEl = document.getElementById('message');
+  const baseUrl = location.origin.includes('localhost') ? 'http://localhost:3000' : location.origin;
+
+  if (!token) {
+    statusEl.textContent = '❌ Error';
+    messageEl.textContent = 'Token inválido o ausente';
+  } else {
+    fetch(`${baseUrl}/verify-email-change?token=${token}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.user) {
+          localStorage.setItem('usuario', data.user.email); // ✅ Guarda el nuevo email
+          statusEl.textContent = '✅ Correo actualizado';
+          messageEl.textContent = 'Redirigiendo a la plataforma...';
+          setTimeout(() => window.location.href = '/', 4000);
+        } else {
+          throw new Error('Respuesta no válida');
+        }
+      })
+      .catch(() => {
+        statusEl.textContent = '❌ Error';
+        messageEl.textContent = 'No se pudo verificar el nuevo correo.';
+      });
+  }
+</script>
 </body>
 </html>
